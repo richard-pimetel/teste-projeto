@@ -1,0 +1,229 @@
+/* Dashboard.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+.dashboard-container {
+  min-height: 100vh;
+  background: #3B5AC4;
+}
+
+/* Header */
+.dashboard-header {
+  background: white;
+  padding: 15px 40px;
+  border-bottom: 3px solid #3B5AC4;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.header-logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.logo-section h1 {
+  color: #3B5AC4;
+  font-size: 48px;
+  font-weight: 400;
+  margin: 0;
+  letter-spacing: -1px;
+}
+
+/* Content */
+.dashboard-content {
+  padding: 30px 50px;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.btn-action {
+  background: white;
+  color: #3B5AC4;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: opacity 0.2s;
+}
+
+.btn-action:hover {
+  opacity: 0.9;
+}
+
+/* Table */
+.table-wrapper {
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.books-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+/* Table Header */
+.books-table thead tr {
+  background: #C5D0F0;
+}
+
+.books-table th {
+  padding: 16px 20px;
+  text-align: left;
+  color: #2A3F7F;
+  font-size: 14px;
+  font-weight: 600;
+  border-right: 1px solid white;
+}
+
+.th-id {
+  width: 120px;
+}
+
+.th-titulo {
+  width: auto;
+}
+
+.th-acao {
+  width: 150px;
+  text-align: center;
+}
+
+/* Table Body */
+.books-table tbody tr {
+  border-bottom: 1px solid white;
+}
+
+.books-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.row-even {
+  background: #E8EBF5;
+}
+
+.row-odd {
+  background: #D4DAF0;
+}
+
+.books-table td {
+  padding: 0;
+}
+
+/* ID Column */
+.td-id {
+  border-right: 1px solid white;
+}
+
+.id-box {
+  background: #3B5AC4;
+  color: white;
+  padding: 16px 20px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Título Column */
+.td-titulo {
+  padding: 16px 20px;
+  color: #3b5ac4;
+  font-size: 15px;
+  font-weight: 500;
+  border-right: 1px solid #3b5ac4;
+}
+
+/* Ação Column */
+.td-acao {
+  padding: 16px 20px;
+  text-align: center;
+  background: #3b5ac4;
+}
+
+.action-icons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+  padding: 4px;
+}
+
+.icon-btn:hover {
+  opacity: 0.8;
+}
+
+.icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-header {
+    padding: 15px 20px;
+  }
+
+  .logo-section h1 {
+    font-size: 28px;
+  }
+
+  .dashboard-content {
+    padding: 20px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .btn-action {
+    width: 100%;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+  }
+
+  .books-table {
+    min-width: 600px;
+  }
+}
