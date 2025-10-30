@@ -6,6 +6,7 @@ import Ellipse3 from '../../img/Ellipse3.png';
 import OndaLateral from '../../img/ondaLateral.png';
 import LogoLogin from '../../img/LogoDaLogin.png';
 import IconUser from '../../img/iconDeUser.png';
+import { usuariosService } from '../../services/usuariosService';
 
 function Cadastro({ onGoToLogin }) {
   const [formData, setFormData] = useState({
@@ -15,6 +16,8 @@ function Cadastro({ onGoToLogin }) {
     password: '',
     confirmPassword: ''
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     setFormData({
@@ -23,14 +26,31 @@ function Cadastro({ onGoToLogin }) {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    
     if (formData.password !== formData.confirmPassword) {
-      alert('As senhas não coincidem!');
+      setError('As senhas não coincidem!');
       return;
     }
-    alert('Cadastro realizado com sucesso!');
-    onGoToLogin();
+
+    setLoading(true);
+    try {
+      await usuariosService.criar({
+        nome: formData.nome,
+        email: formData.email,
+        username: formData.username,
+        password: formData.password
+      });
+      
+      alert('Cadastro realizado com sucesso!');
+      onGoToLogin();
+    } catch (err) {
+      setError(err.message || 'Erro ao criar usuário. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -116,7 +136,11 @@ function Cadastro({ onGoToLogin }) {
             />
           </div>
           
-          <button type="submit" className="cadastro-button">CADASTRAR</button>
+          {error && <div style={{ color: 'red', marginBottom: '10px', fontSize: '14px' }}>{error}</div>}
+          
+          <button type="submit" className="cadastro-button" disabled={loading}>
+            {loading ? 'CADASTRANDO...' : 'CADASTRAR'}
+          </button>
           
           <div className="login-link">
             <p>Já tem conta? <span onClick={onGoToLogin}>Faça Login</span></p>

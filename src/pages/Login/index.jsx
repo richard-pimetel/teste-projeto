@@ -7,15 +7,41 @@ import OndaLateral from '../../img/ondaLateral.png';
 import LogoLogin from '../../img/LogoDaLogin.png';
 import IconUser from '../../img/iconDeUser.png';
 import IconCadeado from '../../img/iconCadeado.png';
+import { usuariosService } from '../../services/usuariosService';
+import { setToken } from '../../services/api';
 
 function Login({ onLogin, onGoToCadastro }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (username && password) {
+    setError('');
+    
+    if (!username || !password) {
+      setError('Preencha todos os campos');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await usuariosService.login({
+        username,
+        password
+      });
+      
+      // Salvar token se retornado pela API
+      if (response.token) {
+        setToken(response.token);
+      }
+      
       onLogin();
+    } catch (err) {
+      setError(err.message || 'Erro ao fazer login. Verifique suas credenciais.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,7 +88,11 @@ function Login({ onLogin, onGoToCadastro }) {
             />
           </div>
           
-          <button type="submit" className="login-button">LOGIN</button>
+          {error && <div style={{ color: 'red', marginBottom: '10px', fontSize: '14px' }}>{error}</div>}
+          
+          <button type="submit" className="login-button" disabled={loading}>
+            {loading ? 'ENTRANDO...' : 'LOGIN'}
+          </button>
           
           <button type="button" className="forgot-password" onClick={() => alert('Funcionalidade em desenvolvimento')}>Forgot password?</button>
           

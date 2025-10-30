@@ -1,13 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles.css';
 import LogoLionBook from '../../img/logoLionBook.png';
+import { movimentacoesService } from '../../services/movimentacoesService';
+import { tiposMovimentacaoService } from '../../services/tiposMovimentacaoService';
 
 function Estoque({ onCancel, onSave, livros = [] }) {
   const [formData, setFormData] = useState({
-    titulo: '',
-    tipoMovimento: '',
+    livroId: '',
+    tipoMovimentacaoId: '',
     quantidade: ''
   });
+  const [tiposMovimentacao, setTiposMovimentacao] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  // Carregar tipos de movimentação ao montar o componente
+  useEffect(() => {
+    carregarTiposMovimentacao();
+  }, []);
+
+  const carregarTiposMovimentacao = async () => {
+    try {
+      const data = await tiposMovimentacaoService.listar();
+      setTiposMovimentacao(data || []);
+    } catch (error) {
+      console.error('Erro ao carregar tipos de movimentação:', error);
+      setError('Erro ao carregar tipos de movimentação');
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,12 +37,29 @@ function Estoque({ onCancel, onSave, livros = [] }) {
     }));
   };
 
-  const handleSubmit = () => {
-    if (!formData.titulo || !formData.tipoMovimento || !formData.quantidade) {
-      alert('Preencha todos os campos!');
+  const handleSubmit = async () => {
+    setError('');
+    
+    if (!formData.livroId || !formData.tipoMovimentacaoId || !formData.quantidade) {
+      setError('Preencha todos os campos!');
       return;
     }
-    onSave(formData);
+
+    setLoading(true);
+    try {
+      await movimentacoesService.criar({
+        livroId: parseInt(formData.livroId),
+        tipoMovimentacaoId: parseInt(formData.tipoMovimentacaoId),
+        quantidade: parseInt(formData.quantidade)
+      });
+      
+      alert('Movimentação registrada com sucesso!');
+      onSave(formData);
+    } catch (err) {
+      setError(err.message || 'Erro ao registrar movimentação');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -38,16 +75,18 @@ function Estoque({ onCancel, onSave, livros = [] }) {
 
       <div className="estoque-content">
         <div className="form-container">
+          {error && <div style={{ color: 'red', marginBottom: '10px', fontSize: '14px' }}>{error}</div>}
+          
           <div className="form-group">
             <select
-              name="titulo"
-              value={formData.titulo}
+              name="livroId"
+              value={formData.livroId}
               onChange={handleChange}
               className="form-select"
             >
-              <option value="" disabled>TÍTULO</option>
+              <option value="" disabled>SELECIONE O LIVRO</option>
               {livros.map((livro) => (
-                <option key={livro.id} value={livro.titulo}>
+                <option key={livro.id} value={livro.id}>
                   {livro.titulo}
                 </option>
               ))}
@@ -56,14 +95,17 @@ function Estoque({ onCancel, onSave, livros = [] }) {
 
           <div className="form-group">
             <select
-              name="tipoMovimento"
-              value={formData.tipoMovimento}
+              name="tipoMovimentacaoId"
+              value={formData.tipoMovimentacaoId}
               onChange={handleChange}
               className="form-select"
             >
-              <option value="" disabled>TIPO DE MOVIMENTO</option>
-              <option value="entrada">Entrada</option>
-              <option value="saida">Saída</option>
+              <option value="" disabled>TIPO DE MOVIMENTAÇÃO</option>
+              {tiposMovimentacao.map((tipo) => (
+                <option key={tipo.id} value={tipo.id}>
+                  {tipo.nome || tipo.descricao}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -79,10 +121,10 @@ function Estoque({ onCancel, onSave, livros = [] }) {
           </div>
 
           <div className="form-buttons">
-            <button className="btn-salvar" onClick={handleSubmit}>
-              SALVAR
+            <button className="btn-salvar" onClick={handleSubmit} disabled={loading}>
+              {loading ? 'SALVANDO...' : 'SALVAR'}
             </button>
-            <button className="btn-cancelar" onClick={onCancel}>
+            <button className="btn-cancelar" onClick={onCancel} disabled={loading}>
               CANCELAR
             </button>
           </div>
