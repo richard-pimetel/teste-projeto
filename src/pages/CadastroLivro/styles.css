@@ -7,20 +7,24 @@
 .cadastro-container {
   min-height: 100vh;
   background: #3B5AC4;
-  font-family: Arial, sans-serif;
 }
 
 /* Header */
 .cadastro-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   background: white;
   padding: 15px 40px;
   border-bottom: 3px solid #3B5AC4;
+  z-index: 1000;
 }
 
 .header-content {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .logo-section {
@@ -29,21 +33,10 @@
   gap: 15px;
 }
 
-.logo-box {
+.header-logo {
   width: 60px;
   height: 60px;
-  background: #3B5AC4;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid #2A4AA3;
-}
-
-.logo-icon {
-  width: 40px;
-  height: 40px;
-  fill: white;
+  object-fit: contain;
 }
 
 .logo-section h1 {
@@ -64,8 +57,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 60px 20px;
-  min-height: calc(100vh - 100px);
+  padding: 120px 20px 60px;
+  min-height: 100vh;
 }
 
 .form-container {
@@ -78,7 +71,8 @@
   position: relative;
 }
 
-.form-input {
+.form-input,
+.form-select {
   width: 100%;
   padding: 16px 20px;
   background: transparent;
@@ -99,9 +93,30 @@
   letter-spacing: 0.5px;
 }
 
-.form-input:focus {
+.form-input:focus,
+.form-select:focus {
   background: rgba(255, 255, 255, 0.1);
   border-color: white;
+}
+
+/* Select styling */
+.form-select {
+  cursor: pointer;
+  padding-right: 45px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 20px;
+}
+
+.form-select option {
+  background: #3B5AC4;
+  color: white;
+  padding: 10px;
+}
+
+.form-select option:disabled {
+  color: rgba(255, 255, 255, 0.6);
 }
 
 /* Remove arrows from number input */
@@ -159,6 +174,10 @@
 
   .logo-section h1 {
     font-size: 32px;
+  }
+
+  .cadastro-content {
+    padding: 100px 20px 40px;
   }
 
   .form-buttons {
