@@ -184,3 +184,42 @@
     flex-direction: column;
   }
 }
+
+/* Mensagens de erro e sucesso */
+.error-message {
+  background-color: #ff4444;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.success-message {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .form-container {
+    padding: 30px 20px;
+    margin: 20px;
+  }
+  
+  .form-buttons {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .btn-cadastrar, .btn-cancelar {
+    width: 100%;
+  }
+}

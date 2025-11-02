@@ -1,0 +1,166 @@
+.debug-logger {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 400px;
+  max-height: 80vh;
+  background: white;
+  border: 2px solid #3B5AC4;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  font-family: 'Courier New', monospace;
+}
+
+.debug-logger.minimized {
+  height: auto;
+  max-height: none;
+}
+
+.debug-header {
+  background: #3B5AC4;
+  color: white;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 6px 6px 0 0;
+}
+
+.debug-header h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.debug-controls {
+  display: flex;
+  gap: 5px;
+}
+
+.debug-controls button {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.2s;
+}
+
+.debug-controls button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.debug-content {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.logs-container {
+  padding: 10px;
+}
+
+.no-logs {
+  text-align: center;
+  color: #666;
+  padding: 20px;
+  font-style: italic;
+}
+
+.log-entry {
+  margin-bottom: 10px;
+  padding: 8px;
+  border-radius: 4px;
+  border-left: 4px solid #ddd;
+  background: #f9f9f9;
+}
+
+.log-entry.error {
+  border-left-color: #ff4444;
+  background: #fff5f5;
+}
+
+.log-entry.success {
+  border-left-color: #4CAF50;
+  background: #f5fff5;
+}
+
+.log-entry.info {
+  border-left-color: #2196F3;
+  background: #f5f9ff;
+}
+
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.log-time {
+  font-size: 11px;
+  color: #666;
+  font-weight: bold;
+}
+
+.log-type {
+  font-size: 12px;
+}
+
+.log-message {
+  font-size: 12px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.log-data {
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px;
+  margin-top: 5px;
+}
+
+.log-data pre {
+  margin: 0;
+  font-size: 10px;
+  color: #555;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+/* Scrollbar customizada */
+.debug-content::-webkit-scrollbar,
+.log-data pre::-webkit-scrollbar {
+  width: 6px;
+}
+
+.debug-content::-webkit-scrollbar-track,
+.log-data pre::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.debug-content::-webkit-scrollbar-thumb,
+.log-data pre::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.debug-content::-webkit-scrollbar-thumb:hover,
+.log-data pre::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .debug-logger {
+    width: calc(100vw - 40px);
+    right: 20px;
+    left: 20px;
+  }
+}

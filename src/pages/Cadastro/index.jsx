@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './styles.css';
+import { userService } from '../../services/api';
 import Ellipse1 from '../../img/Ellipse1.png';
 import Ellipse2 from '../../img/Ellipse2.png';
 import Ellipse3 from '../../img/Ellipse3.png';
@@ -15,6 +16,9 @@ function Cadastro({ onGoToLogin }) {
     password: '',
     confirmPassword: ''
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const handleChange = (e) => {
     setFormData({
@@ -23,14 +27,74 @@ function Cadastro({ onGoToLogin }) {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      alert('As senhas não coincidem!');
+    
+    // Validações
+    if (!formData.nome || !formData.email || !formData.username || !formData.password) {
+      setError('Por favor, preencha todos os campos');
       return;
     }
-    alert('Cadastro realizado com sucesso!');
-    onGoToLogin();
+    
+    if (formData.password !== formData.confirmPassword) {
+      setError('As senhas não coincidem!');
+      return;
+    }
+    
+    if (formData.password.length < 6) {
+      setError('A senha deve ter pelo menos 6 caracteres');
+      return;
+    }
+
+    // Validações de comprimento
+    if (formData.nome.trim().length > 100) {
+      setError('Nome deve ter no máximo 100 caracteres');
+      return;
+    }
+
+    if (formData.email.trim().length > 100) {
+      setError('Email deve ter no máximo 100 caracteres');
+      return;
+    }
+
+    if (formData.username.trim().length > 50) {
+      setError('Username deve ter no máximo 50 caracteres');
+      return;
+    }
+
+    if (formData.password.length > 50) {
+      setError('Senha deve ter no máximo 50 caracteres');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      const userData = {
+        nome: formData.nome.trim(),
+        email: formData.email.trim().toLowerCase(),
+        username: formData.username.trim(),
+        password: formData.password
+      };
+
+      console.log('Dados do usuário a serem enviados:', userData);
+
+      await userService.createUser(userData);
+      
+      setSuccess('Cadastro realizado com sucesso!');
+      
+      // Redirecionar para login após 2 segundos
+      setTimeout(() => {
+        onGoToLogin();
+      }, 2000);
+      
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -56,6 +120,9 @@ function Cadastro({ onGoToLogin }) {
         <h2>Criar Conta</h2>
         
         <form onSubmit={handleSubmit}>
+          {error && <div className="error-message">{error}</div>}
+          {success && <div className="success-message">{success}</div>}
+          
           <div className="input-group">
             <img src={IconUser} alt="Nome" className="input-icon" />
             <input
@@ -64,6 +131,7 @@ function Cadastro({ onGoToLogin }) {
               placeholder="NOME COMPLETO"
               value={formData.nome}
               onChange={handleChange}
+              disabled={loading}
               required
             />
           </div>
@@ -76,6 +144,7 @@ function Cadastro({ onGoToLogin }) {
               placeholder="EMAIL"
               value={formData.email}
               onChange={handleChange}
+              disabled={loading}
               required
             />
           </div>
@@ -88,6 +157,7 @@ function Cadastro({ onGoToLogin }) {
               placeholder="USERNAME"
               value={formData.username}
               onChange={handleChange}
+              disabled={loading}
               required
             />
           </div>
@@ -100,6 +170,7 @@ function Cadastro({ onGoToLogin }) {
               placeholder="PASSWORD"
               value={formData.password}
               onChange={handleChange}
+              disabled={loading}
               required
             />
           </div>
@@ -112,11 +183,14 @@ function Cadastro({ onGoToLogin }) {
               placeholder="CONFIRMAR PASSWORD"
               value={formData.confirmPassword}
               onChange={handleChange}
+              disabled={loading}
               required
             />
           </div>
           
-          <button type="submit" className="cadastro-button">CADASTRAR</button>
+          <button type="submit" className="cadastro-button" disabled={loading}>
+            {loading ? 'CADASTRANDO...' : 'CADASTRAR'}
+          </button>
           
           <div className="login-link">
             <p>Já tem conta? <span onClick={onGoToLogin}>Faça Login</span></p>

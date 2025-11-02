@@ -171,6 +171,94 @@
   opacity: 0.8;
 }
 
+/* Seção de erro */
+.error-section {
+  margin-bottom: 15px;
+}
+
+/* Mensagem de erro */
+.error-message {
+  background-color: #ff4444;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* Botão de cadastro rápido */
+.btn-cadastro-rapido {
+  width: 100%;
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.btn-cadastro-rapido:hover {
+  background: linear-gradient(135deg, #45a049, #4CAF50);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* Debug Logs */
+.debug-logs {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+  font-family: 'Courier New', monospace;
+}
+
+.debug-logs h4 {
+  margin: 0 0 10px 0;
+  color: #4CAF50;
+  font-size: 14px;
+}
+
+.logs-container {
+  font-size: 11px;
+}
+
+.log-entry {
+  margin-bottom: 8px;
+  padding: 5px;
+  border-left: 3px solid #4CAF50;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.log-time {
+  color: #888;
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.log-message {
+  color: #fff;
+  font-weight: bold;
+}
+
+.log-data {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 5px;
+  margin-top: 5px;
+  border-radius: 3px;
+  font-size: 10px;
+  color: #ccc;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
 @media (max-width: 768px) {
   .login-box {
     padding: 40px 30px;

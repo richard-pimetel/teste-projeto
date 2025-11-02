@@ -163,8 +163,30 @@
   opacity: 0.8;
 }
 
+/* Mensagens de erro e sucesso */
+.error-message {
+  background-color: #ff4444;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.success-message {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 14px;
+}
+
 @media (max-width: 768px) {
   .cadastro-box {
     padding: 40px 30px;
+    margin: 20px;
   }
 }

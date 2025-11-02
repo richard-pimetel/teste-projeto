@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles.css';
+import { bookService } from '../../services/api';
 import LogoLionBook from '../../img/logoLionBook.png';
 import IconDelete from '../../img/iconDelete.png';
 import IconEdit from '../../img/iconDeEdicao.png';
@@ -8,20 +9,41 @@ import Estoque from '../Estoque';
 
 function Dashboard({ onLogout }) {
   const [currentView, setCurrentView] = useState('dashboard'); // 'dashboard', 'cadastro', 'estoque'
-  const [livros, setLivros] = useState([
-    { id: 120, titulo: 'A Volta ao Mundo em 80 Dias' },
-    { id: 456, titulo: 'O velho e o menino' },
-    { id: 987, titulo: 'As coisas que você só vê quando desacelera' },
-    { id: 321, titulo: 'O Homem que Calculava' }
-  ]);
+  const [livros, setLivros] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const [showModal, setShowModal] = useState(false);
   const [editingBook, setEditingBook] = useState(null);
   const [newBook, setNewBook] = useState({ id: '', titulo: '' });
 
-  const handleDelete = (id) => {
+  // Função para carregar livros da API
+  const loadBooks = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const response = await bookService.getAllBooks();
+      setLivros(response);
+    } catch (error) {
+      setError('Erro ao carregar livros: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Carregar livros ao montar o componente
+  useEffect(() => {
+    loadBooks();
+  }, []);
+
+  const handleDelete = async (id) => {
     if (window.confirm('Deseja realmente excluir este livro?')) {
-      setLivros(livros.filter(livro => livro.id !== id));
+      try {
+        await bookService.deleteBook(id);
+        await loadBooks(); // Recarregar lista
+      } catch (error) {
+        setError('Erro ao excluir livro: ' + error.message);
+      }
     }
   };
 
@@ -39,11 +61,9 @@ function Dashboard({ onLogout }) {
     setCurrentView('estoque');
   };
 
-  const handleCadastroSave = (formData) => {
-    const newId = Math.max(...livros.map(l => l.id), 0) + 1;
-    setLivros([...livros, { id: newId, titulo: formData.titulo }]);
+  const handleCadastroSave = async (formData) => {
     setCurrentView('dashboard');
-    alert('Livro cadastrado com sucesso!');
+    await loadBooks(); // Recarregar lista após cadastro
   };
 
   const handleEstoqueSave = (formData) => {
@@ -101,7 +121,12 @@ function Dashboard({ onLogout }) {
           <button className="btn-action" onClick={handleEstoque}>ESTOQUE</button>
         </div>
 
-        <div className="table-wrapper">
+        {error && <div className="error-message">{error}</div>}
+        
+        {loading ? (
+          <div className="loading-message">Carregando livros...</div>
+        ) : (
+          <div className="table-wrapper">
           <table className="books-table">
             <thead>
               <tr>
@@ -139,7 +164,8 @@ function Dashboard({ onLogout }) {
               ))}
             </tbody>
           </table>
-        </div>
+          </div>
+        )}
       </div>
 
       {showModal && (
